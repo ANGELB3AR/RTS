@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class UnitMovement : NetworkBehaviour
 {
@@ -34,9 +35,9 @@ public class UnitMovement : NetworkBehaviour
     {
         if (!isOwned) { return; }
 
-        if (!Input.GetMouseButtonDown(0)) { return; }
+        if (!Mouse.current.rightButton.wasPressedThisFrame) { return; }
 
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity)) { return; }
 
         CmdMove(hit.point);
