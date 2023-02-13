@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -2185603424123169269}
   - component: {fileID: -8505595266332270605}
   - component: {fileID: -872882869611121983}
+  - component: {fileID: 6069628621139516910}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -167,6 +168,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!65 &6069628621139516910
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2391118766021231732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.621201, y: 2.3793335, z: 2.7748802}
+  m_Center: {x: -0.020467997, y: 1.1303287, z: 0.08794439}
 --- !u!1 &5306629638135061128
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +192,7 @@ GameObject:
   - component: {fileID: 6077361932899746393}
   - component: {fileID: 7191954845925404664}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: SelectedHighlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
