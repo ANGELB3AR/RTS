@@ -27,7 +27,7 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
     {
         if (eventData.button != PointerEventData.InputButton.Left) { return; }
 
-        if (!hasAuthority) { return; }
+        if (!isOwned) { return; }
 
         CmdSpawnUnit();
     }
