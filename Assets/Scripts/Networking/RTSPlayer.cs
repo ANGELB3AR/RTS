@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class RTSPlayer : NetworkBehaviour
 {
-    List<Unit> myUnits = new List<Unit>();
+    [SerializeField] List<Unit> myUnits = new List<Unit>();
+
+    #region Server
 
     public override void OnStartServer()
     {
@@ -33,4 +35,40 @@ public class RTSPlayer : NetworkBehaviour
 
         myUnits.Remove(unit);
     }
+
+    #endregion
+
+    #region Client
+
+    public override void OnStartClient()
+    {
+        if (!isClientOnly) { return; }
+
+        Unit.AuthorityOnUnitSpawned += AuthorityHandleUnitSpawned;
+        Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+    }
+
+    public override void OnStopClient()
+    {
+        if (!isClientOnly) { return; }
+
+        Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
+        Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+    }
+
+    private void AuthorityHandleUnitSpawned(Unit unit)
+    {
+        if (!isOwned) { return; }
+
+        myUnits.Add(unit);
+    }
+
+    private void AuthorityHandleUnitDespawned(Unit unit)
+    {
+        if (!isOwned) { return; }
+
+        myUnits.Remove(unit);
+    }
+
+    #endregion
 }

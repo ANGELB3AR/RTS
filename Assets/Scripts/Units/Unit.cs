@@ -14,6 +14,9 @@ public class Unit : NetworkBehaviour
     public static event Action<Unit> ServerOnUnitSpawned;
     public static event Action<Unit> ServerOnUnitDespawned;
 
+    public static event Action<Unit> AuthorityOnUnitSpawned;
+    public static event Action<Unit> AuthorityOnUnitDespawned;
+
     public UnitMovement GetUnitMovement()
     {
         return unitMovement;
@@ -34,6 +37,20 @@ public class Unit : NetworkBehaviour
     #endregion
 
     #region Client
+
+    public override void OnStartClient()
+    {
+        if (!isClientOnly || !isOwned) { return; }
+
+        AuthorityOnUnitSpawned?.Invoke(this);
+    }
+
+    public override void OnStopClient()
+    {
+        if (!isClientOnly || !isOwned) { return; }
+
+        AuthorityOnUnitDespawned?.Invoke(this);
+    }
 
     [Client]
     public void Select()
