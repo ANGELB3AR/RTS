@@ -9,7 +9,8 @@ public class UnitSelectionHandler : MonoBehaviour
     [SerializeField] LayerMask layerMask = new LayerMask();
 
     Camera mainCamera;
-    List<Unit> selectedUnits = new List<Unit>();
+    
+    public List<Unit> selectedUnits { get; } = new List<Unit>();
 
     private void Start()
     {
