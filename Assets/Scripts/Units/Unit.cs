@@ -8,6 +8,7 @@ using UnityEngine.Events;
 public class Unit : NetworkBehaviour
 {
     [SerializeField] UnitMovement unitMovement = null;
+    [SerializeField] Targeter targeter = null;
     [SerializeField] UnityEvent onSelected = null;
     [SerializeField] UnityEvent onDeselected = null;
 
@@ -20,6 +21,11 @@ public class Unit : NetworkBehaviour
     public UnitMovement GetUnitMovement()
     {
         return unitMovement;
+    }
+
+    public Targeter GetTargeter()
+    {
+        return targeter;
     }
 
     #region Server
