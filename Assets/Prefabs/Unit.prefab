@@ -109,7 +109,7 @@ MonoBehaviour:
   syncInterval: 0.1
   agent: {fileID: -2185603424123169269}
   targeter: {fileID: 6673152152243986462}
-  chaseRange: 10
+  chaseRange: 5
 --- !u!114 &2436871511322262520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6912348769845270449, guid: 3d5fb00f82446dd4f90cdb651fadd280,
     type: 3}
   projectileSpawnPoint: {fileID: 3843338915083153755}
-  fireRange: 5
+  fireRange: 8
   fireRate: 1
   rotationSpeed: 20
 --- !u!195 &-2185603424123169269
