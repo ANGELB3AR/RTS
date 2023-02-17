@@ -20,11 +20,13 @@ public class UnitSelectionHandler : MonoBehaviour
     private void OnEnable()
     {
         Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+        GameOverHandler.ClientOnGameOver += ClientHandleGameOver;
     }
 
     private void OnDisable()
     {
         Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+        GameOverHandler.ClientOnGameOver -= ClientHandleGameOver;
     }
 
     private void Start()
@@ -128,5 +130,10 @@ public class UnitSelectionHandler : MonoBehaviour
     void AuthorityHandleUnitDespawned(Unit unit)
     {
         selectedUnits.Remove(unit);
+    }
+
+    void ClientHandleGameOver(string winner)
+    {
+        enabled = false;
     }
 }
