@@ -89,6 +89,7 @@ MonoBehaviour:
   unitPrefab: {fileID: 2391118766021231732, guid: 0cc5e484fed8aa54dae46e72372ceaf8,
     type: 3}
   unitSpawnPoint: {fileID: 8386341365537545699}
+  health: {fileID: 2053564734778950148}
 --- !u!114 &5062500434741791986
 MonoBehaviour:
   m_ObjectHideFlags: 0

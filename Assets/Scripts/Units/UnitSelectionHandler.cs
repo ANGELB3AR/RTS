@@ -17,6 +17,16 @@ public class UnitSelectionHandler : MonoBehaviour
     
     public List<Unit> selectedUnits { get; } = new List<Unit>();
 
+    private void OnEnable()
+    {
+        Unit.AuthorityOnUnitDespawned += AuthorityHandleUnitDespawned;
+    }
+
+    private void OnDisable()
+    {
+        Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
+    }
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -113,5 +123,10 @@ public class UnitSelectionHandler : MonoBehaviour
                 unit.Select();
             }
         }
+    }
+
+    void AuthorityHandleUnitDespawned(Unit unit)
+    {
+        selectedUnits.Remove(unit);
     }
 }
