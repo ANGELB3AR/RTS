@@ -250,6 +250,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: BuildingButton
       objectReference: {fileID: 0}
+    - target: {fileID: 7435916112256463209, guid: e4e04f09f7924e14d9771e222e4caf0f,
+        type: 3}
+      propertyPath: building
+      value: 
+      objectReference: {fileID: 6199460587709727153, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4e04f09f7924e14d9771e222e4caf0f, type: 3}
 --- !u!224 &8037658789706004933 stripped
