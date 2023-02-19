@@ -33,7 +33,7 @@ public class UnitSpawner : NetworkBehaviour, IPointerClickHandler
     [Server]
     void ServerHandleDie()
     {
-        //NetworkServer.Destroy(gameObject);
+        NetworkServer.Destroy(gameObject);
     }
 
     #endregion
