@@ -161,6 +161,16 @@ PrefabInstance:
       propertyPath: _assetId
       value: 4088372242
       objectReference: {fileID: 0}
+    - target: {fileID: 3472974178838679511, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: colorRenderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3472974178838679511, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: colorRenderers.Array.data[0]
+      value: 
+      objectReference: {fileID: 6509991625629114282}
     - target: {fileID: 4397266386294847757, guid: a6a52bca0300b364abb90ddd6a880d04,
         type: 3}
       propertyPath: m_Name
@@ -228,18 +238,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6a52bca0300b364abb90ddd6a880d04, type: 3}
---- !u!114 &74933140773836896 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4826914730709886010, guid: a6a52bca0300b364abb90ddd6a880d04,
-    type: 3}
-  m_PrefabInstance: {fileID: 4897262263580933210}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9146996041935226199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b2d64b316088a346a4de527a7154bb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1506696976858368914 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6277541783721670600, guid: a6a52bca0300b364abb90ddd6a880d04,
@@ -268,7 +266,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   aimAtPoint: {fileID: 824902411494878964}
---- !u!114 &5806973057861745931
+--- !u!114 &3166767575286297771
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,10 +275,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9146996041935226199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 665c322cadf66af4dbf254e5278209e4, type: 3}
+  m_Script: {fileID: 11500000, guid: 5908de5d5a88c314d844dcdbdf740249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  health: {fileID: 74933140773836896}
+  colorRenderers:
+  - {fileID: 6509991625629114282}

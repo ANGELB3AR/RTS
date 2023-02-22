@@ -10,6 +10,7 @@ public class RTSPlayer : NetworkBehaviour
     [SerializeField] Building[] buildings = new Building[0];
     [SerializeField] float buildingRangeLimit = 5f;
 
+    Color teamColor = new Color();
     List<Unit> myUnits = new List<Unit>();
     List<Building> myBuildings = new List<Building>();
     
@@ -17,6 +18,11 @@ public class RTSPlayer : NetworkBehaviour
     int resources = 500;
 
     public event Action<int> ClientOnResourcesUpdated;
+
+    public Color GetTeamColor()
+    {
+        return teamColor;
+    }
 
     public List<Unit> GetMyUnits()
     {
@@ -31,12 +37,6 @@ public class RTSPlayer : NetworkBehaviour
     public int GetResources()
     {
         return resources;
-    }
-
-    [Server]
-    public void SetResources(int resources)
-    {
-        this.resources = resources;
     }
 
     public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
@@ -80,6 +80,18 @@ public class RTSPlayer : NetworkBehaviour
 
         Building.ServerOnBuildingSpawn -= ServerHandleBuildingSpawned;
         Building.ServerOnBuildingDespawn -= ServerHandleBuildingDespawned;
+    }
+
+    [Server]
+    public void SetTeamColor(Color newTeamColor)
+    {
+        teamColor = newTeamColor;
+    }
+
+    [Server]
+    public void SetResources(int resources)
+    {
+        this.resources = resources;
     }
 
     [Command]
