@@ -54,7 +54,7 @@ public class CameraController : NetworkBehaviour
                 cursorMovement.z -= 1;
             }
 
-            if (cursorPosition.x >= Screen.height - screenBorderThickness)
+            if (cursorPosition.x >= Screen.width - screenBorderThickness)
             {
                 cursorMovement.x += 1;
             }
