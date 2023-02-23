@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5124825506758992230
+--- !u!1001 &4257411913544703733
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,12 +10,12 @@ PrefabInstance:
     - target: {fileID: 3142348717615077646, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
       propertyPath: _assetId
-      value: 2762144338
+      value: 1237581433
       objectReference: {fileID: 0}
     - target: {fileID: 4030382826620866035, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
       propertyPath: damageToDeal
-      value: 25
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4481407917696692625, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
@@ -25,17 +25,17 @@ PrefabInstance:
     - target: {fileID: 4481407917696692625, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4481407917696692625, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4481407917696692625, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4481407917696692625, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
@@ -95,7 +95,7 @@ PrefabInstance:
     - target: {fileID: 6912348769845270449, guid: 3d5fb00f82446dd4f90cdb651fadd280,
         type: 3}
       propertyPath: m_Name
-      value: Projectile_Medium
+      value: Projectile_Large
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d5fb00f82446dd4f90cdb651fadd280, type: 3}
