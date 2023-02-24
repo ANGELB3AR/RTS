@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5361501290004915630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -0.93, y: 1.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88,8 +88,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7479187039203774188}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.437, y: 2.388, z: 0}
+  m_LocalScale: {x: 3.3162155, y: 3.7170799, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1506696976858368914}
@@ -152,6 +152,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 119381172714533662, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.1528659
+      objectReference: {fileID: 0}
+    - target: {fileID: 119381172714533662, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 2.34531
+      objectReference: {fileID: 0}
+    - target: {fileID: 119381172714533662, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Extents.x
+      value: 1.4827095
+      objectReference: {fileID: 0}
+    - target: {fileID: 119381172714533662, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Extents.y
+      value: 1.9085505
+      objectReference: {fileID: 0}
     - target: {fileID: 1584838920889417195, guid: a6a52bca0300b364abb90ddd6a880d04,
         type: 3}
       propertyPath: id
@@ -192,7 +212,7 @@ PrefabInstance:
         type: 3}
       propertyPath: colorRenderers.Array.data[0]
       value: 
-      objectReference: {fileID: 4843713702161685872}
+      objectReference: {fileID: 2156462891382247274}
     - target: {fileID: 3472974178838679511, guid: a6a52bca0300b364abb90ddd6a880d04,
         type: 3}
       propertyPath: colorRenderers.Array.data[1]
@@ -210,8 +230,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4407004543881207714, guid: a6a52bca0300b364abb90ddd6a880d04,
         type: 3}
-      propertyPath: m_AnchoredPosition.y
+      propertyPath: m_SizeDelta.x
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4407004543881207714, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826914730709886010, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: maxHealth
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907179205263342208, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 2.9654193
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907179205263342208, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 3.8171005
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907179205263342208, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.15286589
+      objectReference: {fileID: 0}
+    - target: {fileID: 4907179205263342208, guid: a6a52bca0300b364abb90ddd6a880d04,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 2.3453102
       objectReference: {fileID: 0}
     - target: {fileID: 6277541783721670600, guid: a6a52bca0300b364abb90ddd6a880d04,
         type: 3}
@@ -382,9 +432,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e49f52a1697d8e24190b3cbde1fc2566, type: 3}
---- !u!23 &4843713702161685872 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 3006743771405226446, guid: e49f52a1697d8e24190b3cbde1fc2566,
+--- !u!137 &2156462891382247274 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8606099502129382356, guid: e49f52a1697d8e24190b3cbde1fc2566,
     type: 3}
   m_PrefabInstance: {fileID: 7674778583145909438}
   m_PrefabAsset: {fileID: 0}
