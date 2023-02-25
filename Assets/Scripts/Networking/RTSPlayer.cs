@@ -17,8 +17,17 @@ public class RTSPlayer : NetworkBehaviour
     
     [SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
     int resources = 500;
+    [SyncVar(hook = nameof(AuthorityHandlePartyOwnerStateUpdated))]
+    bool isPartyOwner = false;
 
     public event Action<int> ClientOnResourcesUpdated;
+
+    public static event Action<bool> AuthorityOnPartyOwnerStateUpdated;
+
+    public bool GetIsPartyOwner()
+    {
+        return isPartyOwner;
+    }
 
     public Transform GetCameraTransform()
     {
@@ -89,6 +98,12 @@ public class RTSPlayer : NetworkBehaviour
     }
 
     [Server]
+    public void SetPartyOwner(bool state)
+    {
+        isPartyOwner = state;
+    }
+
+    [Server]
     public void SetTeamColor(Color newTeamColor)
     {
         teamColor = newTeamColor;
@@ -98,6 +113,14 @@ public class RTSPlayer : NetworkBehaviour
     public void SetResources(int resources)
     {
         this.resources = resources;
+    }
+
+    [Command]
+    public void CmdStartGame()
+    {
+        if (!isPartyOwner) { return; }
+
+        ((RTSNetworkManager)NetworkManager.singleton).StartGame();
     }
 
     [Command]
@@ -171,9 +194,20 @@ public class RTSPlayer : NetworkBehaviour
         Building.AuthorityOnBuildingDespawned += AuthorityHandleBuildingDespawned;
     }
 
+    public override void OnStartClient()
+    {
+        if (NetworkServer.active) { return; }
+
+        ((RTSNetworkManager)NetworkManager.singleton).Players.Add(this);
+    }
+
     public override void OnStopClient()
     {
-        if (!isClientOnly || !isOwned) { return; }
+        if (!isClientOnly) { return; }
+
+        ((RTSNetworkManager)NetworkManager.singleton).Players.Remove(this);
+
+        if (!isOwned) { return; }
 
         Unit.AuthorityOnUnitSpawned -= AuthorityHandleUnitSpawned;
         Unit.AuthorityOnUnitDespawned -= AuthorityHandleUnitDespawned;
@@ -206,6 +240,13 @@ public class RTSPlayer : NetworkBehaviour
     private void AuthorityHandleBuildingDespawned(Building building)
     {
         myBuildings.Remove(building);
+    }
+
+    void AuthorityHandlePartyOwnerStateUpdated(bool oldState, bool newState)
+    {
+        if (!isOwned) { return; }
+
+        AuthorityOnPartyOwnerStateUpdated?.Invoke(newState);
     }
 
     #endregion
