@@ -30,9 +30,10 @@ namespace Mirror
         public Transform target;
 
         // TODO SyncDirection { ClientToServer, ServerToClient } is easier?
+        // Deprecated 2022-10-25
         [Obsolete("NetworkTransform clientAuthority was replaced with syncDirection. To enable client authority, set SyncDirection to ClientToServer in the Inspector.")]
         [Header("[Obsolete]")] // Unity doesn't show obsolete warning for fields. do it manually.
-        [Tooltip("Set to true if moves come from owner client, set to false if moves always come from server")]
+        [Tooltip("Obsolete: NetworkTransform clientAuthority was replaced with syncDirection. To enable client authority, set SyncDirection to ClientToServer in the Inspector.")]
         public bool clientAuthority;
         // Is this a client with authority over this transform?
         // This component could be on the player object or any object that has been assigned authority to this client.
@@ -154,71 +155,6 @@ namespace Mirror
             if (syncScale)    target.localScale = interpolated.scale;
         }
 
-        // common Teleport code for client->server and server->client
-        protected virtual void OnTeleport(Vector3 destination)
-        {
-            // reset any in-progress interpolation & buffers
-            Reset();
-
-            // set the new position.
-            // interpolation will automatically continue.
-            target.position = destination;
-
-            // TODO
-            // what if we still receive a snapshot from before the interpolation?
-            // it could easily happen over unreliable.
-            // -> maybe add destination as first entry?
-        }
-
-        // common Teleport code for client->server and server->client
-        protected virtual void OnTeleport(Vector3 destination, Quaternion rotation)
-        {
-            // reset any in-progress interpolation & buffers
-            Reset();
-
-            // set the new position.
-            // interpolation will automatically continue.
-            target.position = destination;
-            target.rotation = rotation;
-
-            // TODO
-            // what if we still receive a snapshot from before the interpolation?
-            // it could easily happen over unreliable.
-            // -> maybe add destination as first entry?
-        }
-
-        // server->client teleport to force position without interpolation.
-        // otherwise it would interpolate to a (far away) new position.
-        // => manually calling Teleport is the only 100% reliable solution.
-        [ClientRpc]
-        public void RpcTeleport(Vector3 destination)
-        {
-            // NOTE: even in client authority mode, the server is always allowed
-            //       to teleport the player. for example:
-            //       * CmdEnterPortal() might teleport the player
-            //       * Some people use client authority with server sided checks
-            //         so the server should be able to reset position if needed.
-
-            // TODO what about host mode?
-            OnTeleport(destination);
-        }
-
-        // server->client teleport to force position and rotation without interpolation.
-        // otherwise it would interpolate to a (far away) new position.
-        // => manually calling Teleport is the only 100% reliable solution.
-        [ClientRpc]
-        public void RpcTeleport(Vector3 destination, Quaternion rotation)
-        {
-            // NOTE: even in client authority mode, the server is always allowed
-            //       to teleport the player. for example:
-            //       * CmdEnterPortal() might teleport the player
-            //       * Some people use client authority with server sided checks
-            //         so the server should be able to reset position if needed.
-
-            // TODO what about host mode?
-            OnTeleport(destination, rotation);
-        }
-
         // client->server teleport to force position without interpolation.
         // otherwise it would interpolate to a (far away) new position.
         // => manually calling Teleport is the only 100% reliable solution.
@@ -263,6 +199,77 @@ namespace Mirror
             RpcTeleport(destination, rotation);
         }
 
+        // server->client teleport to force position without interpolation.
+        // otherwise it would interpolate to a (far away) new position.
+        // => manually calling Teleport is the only 100% reliable solution.
+        [ClientRpc]
+        public void RpcTeleport(Vector3 destination)
+        {
+            // NOTE: even in client authority mode, the server is always allowed
+            //       to teleport the player. for example:
+            //       * CmdEnterPortal() might teleport the player
+            //       * Some people use client authority with server sided checks
+            //         so the server should be able to reset position if needed.
+
+            // TODO what about host mode?
+            OnTeleport(destination);
+        }
+
+        // server->client teleport to force position and rotation without interpolation.
+        // otherwise it would interpolate to a (far away) new position.
+        // => manually calling Teleport is the only 100% reliable solution.
+        [ClientRpc]
+        public void RpcTeleport(Vector3 destination, Quaternion rotation)
+        {
+            // NOTE: even in client authority mode, the server is always allowed
+            //       to teleport the player. for example:
+            //       * CmdEnterPortal() might teleport the player
+            //       * Some people use client authority with server sided checks
+            //         so the server should be able to reset position if needed.
+
+            // TODO what about host mode?
+            OnTeleport(destination, rotation);
+        }
+
+        [ClientRpc]
+        void RpcReset()
+        {
+            Reset();
+        }
+
+        // common Teleport code for client->server and server->client
+        protected virtual void OnTeleport(Vector3 destination)
+        {
+            // reset any in-progress interpolation & buffers
+            Reset();
+
+            // set the new position.
+            // interpolation will automatically continue.
+            target.position = destination;
+
+            // TODO
+            // what if we still receive a snapshot from before the interpolation?
+            // it could easily happen over unreliable.
+            // -> maybe add destination as first entry?
+        }
+
+        // common Teleport code for client->server and server->client
+        protected virtual void OnTeleport(Vector3 destination, Quaternion rotation)
+        {
+            // reset any in-progress interpolation & buffers
+            Reset();
+
+            // set the new position.
+            // interpolation will automatically continue.
+            target.position = destination;
+            target.rotation = rotation;
+
+            // TODO
+            // what if we still receive a snapshot from before the interpolation?
+            // it could easily happen over unreliable.
+            // -> maybe add destination as first entry?
+        }
+
         public virtual void Reset()
         {
             // disabled objects aren't updated anymore.
@@ -271,8 +278,38 @@ namespace Mirror
             clientSnapshots.Clear();
         }
 
-        protected virtual void OnDisable() => Reset();
-        protected virtual void OnEnable()  => Reset();
+        protected virtual void OnEnable()
+        {
+            Reset();
+
+            if (NetworkServer.active)
+                NetworkIdentity.clientAuthorityCallback += OnClientAuthorityChanged;
+        }
+
+        protected virtual void OnDisable()
+        {
+            Reset();
+
+            if (NetworkServer.active)
+                NetworkIdentity.clientAuthorityCallback -= OnClientAuthorityChanged;
+        }
+
+        [ServerCallback]
+        void OnClientAuthorityChanged(NetworkConnectionToClient conn, NetworkIdentity identity, bool authorityState)
+        {
+            if (identity != netIdentity) return;
+
+            // If server gets authority or syncdirection is server to client,
+            // we don't reset buffers.
+            // This is because if syncdirection is S to C, we will never have
+            // snapshot issues since there is only ever 1 source.
+
+            if (syncDirection == SyncDirection.ClientToServer)
+            {
+                Reset();
+                RpcReset();
+            }
+        }
 
         // OnGUI allocates even if it does nothing. avoid in release.
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -280,6 +317,7 @@ namespace Mirror
         protected virtual void OnGUI()
         {
             if (!showOverlay) return;
+            if (!Camera.main) return;
 
             // show data next to player for easier debugging. this is very useful!
             // IMPORTANT: this is basically an ESP hack for shooter games.

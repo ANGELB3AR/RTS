@@ -28,10 +28,14 @@ namespace kcp2k
         // even for errors, to allow liraries to show popups etc.
         // instead of logging directly.
         // (string instead of Exception for ease of use and to avoid user panic)
-        public Action OnConnected;
-        public Action<ArraySegment<byte>, KcpChannel> OnData;
-        public Action OnDisconnected;
-        public Action<ErrorCode, string> OnError;
+        //
+        // events are readonly, set in constructor.
+        // this ensures they are always initialized when used.
+        // fixes https://github.com/MirrorNetworking/Mirror/issues/3337 and more
+        readonly Action OnConnected;
+        readonly Action<ArraySegment<byte>, KcpChannel> OnData;
+        readonly Action OnDisconnected;
+        readonly Action<ErrorCode, string> OnError;
 
         // state
         public bool connected;
@@ -41,6 +45,7 @@ namespace kcp2k
                          Action OnDisconnected,
                          Action<ErrorCode, string> OnError)
         {
+            // initialize callbacks first to ensure they can be used safely.
             this.OnConnected = OnConnected;
             this.OnData = OnData;
             this.OnDisconnected = OnDisconnected;
@@ -55,22 +60,27 @@ namespace kcp2k
                 return;
             }
 
-            // create fresh peer for each new session
-            peer = new KcpPeer(RawSend, config);
+            // resolve host name before creating peer.
+            // fixes: https://github.com/MirrorNetworking/Mirror/issues/3361
+            if (!Common.ResolveHostname(address, out IPAddress[] addresses))
+            {
+                // pass error to user callback. no need to log it manually.
+                OnError(ErrorCode.DnsResolve, $"Failed to resolve host: {address}");
+                OnDisconnected();
+                return;
+            }
 
-            // setup events
-            peer.OnAuthenticated = () =>
+            // create fresh peer for each new session
+            peer = new KcpPeer(RawSend, OnAuthenticatedWrap, OnData, OnDisconnectedWrap, OnError, config);
+
+            // some callbacks need to wrapped with some extra logic
+            void OnAuthenticatedWrap()
             {
                 Log.Info($"KcpClient: OnConnected");
                 connected = true;
                 OnConnected();
-            };
-            peer.OnData = (message, channel) =>
-            {
-                //Log.Debug($"KcpClient: OnClientData({BitConverter.ToString(message.Array, message.Offset, message.Count)})");
-                OnData(message, channel);
-            };
-            peer.OnDisconnected = () =>
+            }
+            void OnDisconnectedWrap()
             {
                 Log.Info($"KcpClient: OnDisconnected");
                 connected = false;
@@ -79,22 +89,9 @@ namespace kcp2k
                 socket = null;
                 remoteEndPoint = null;
                 OnDisconnected();
-            };
-            peer.OnError = (error, reason) =>
-            {
-                OnError(error, reason);
-            };
+            }
 
             Log.Info($"KcpClient: connect to {address}:{port}");
-
-            // try resolve host name
-            if (!Common.ResolveHostname(address, out IPAddress[] addresses))
-            {
-                // pass error to user callback. no need to log it manually.
-                peer.OnError(ErrorCode.DnsResolve, $"Failed to resolve host: {address}");
-                peer.OnDisconnected();
-                return;
-            }
 
             // create socket
             remoteEndPoint = new IPEndPoint(addresses[0], port);
