@@ -161,9 +161,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8342049186755261325, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
         type: 3}
+      propertyPath: colorRenderers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8342049186755261325, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
+        type: 3}
       propertyPath: colorRenderers.Array.data[0]
       value: 
       objectReference: {fileID: 2682389682267493009}
+    - target: {fileID: 8342049186755261325, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
+        type: 3}
+      propertyPath: colorRenderers.Array.data[1]
+      value: 
+      objectReference: {fileID: 5540262043850873897}
     - target: {fileID: 9141816158901036024, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -189,6 +199,12 @@ PrefabInstance:
 --- !u!4 &4005540565730654198 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1506696976858368914, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2557575126678158436}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5540262043850873897 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8042483351770701901, guid: 77a1e3e42a2fd3f43b6f7c0bf8498df9,
     type: 3}
   m_PrefabInstance: {fileID: 2557575126678158436}
   m_PrefabAsset: {fileID: 0}

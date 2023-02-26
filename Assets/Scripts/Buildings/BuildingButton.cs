@@ -23,6 +23,7 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private void Start()
     {
         mainCamera = Camera.main;
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
 
         iconImage.sprite = building.GetIcon();
         priceText.text = building.GetPrice().ToString();
@@ -32,11 +33,6 @@ public class BuildingButton : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     private void Update()
     {
-        if (player == null)
-        {
-            player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
-        }
-
         if (buildingPreviewInstance == null) { return; }
 
         UpdateBuildingPreview();

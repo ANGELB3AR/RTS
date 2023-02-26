@@ -10,18 +10,18 @@ public class ResourcesDisplay : MonoBehaviour
 
     RTSPlayer player;
 
+    private void Start()
+    {
+        player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+    }
+
     private void Update()
     {
-        if (player == null)
+        if (player!= null)
         {
-            player = NetworkClient.connection.identity.GetComponent<RTSPlayer>();
+            ClientHandleResourcesUpdated(player.GetResources());
 
-            if (player!= null)
-            {
-                ClientHandleResourcesUpdated(player.GetResources());
-
-                player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
-            }
+            player.ClientOnResourcesUpdated += ClientHandleResourcesUpdated;
         }
     }
 
