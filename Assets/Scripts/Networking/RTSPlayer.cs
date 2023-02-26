@@ -91,6 +91,8 @@ public class RTSPlayer : NetworkBehaviour
 
     #region Server
 
+    #region Overrides
+
     public override void OnStartServer()
     {
         Unit.ServerOnUnitSpawned += ServerHandleUnitSpawned;
@@ -110,6 +112,10 @@ public class RTSPlayer : NetworkBehaviour
         Building.ServerOnBuildingSpawn -= ServerHandleBuildingSpawned;
         Building.ServerOnBuildingDespawn -= ServerHandleBuildingDespawned;
     }
+
+    #endregion
+
+    #region Setters
 
     [Server]
     public void SetPartyOwner(bool state)
@@ -135,6 +141,9 @@ public class RTSPlayer : NetworkBehaviour
         this.displayName = displayName;
     }
 
+    #endregion
+
+    #region Commands
     [Command]
     public void CmdStartGame()
     {
@@ -171,6 +180,10 @@ public class RTSPlayer : NetworkBehaviour
         SetResources(resources - buildingToPlace.GetPrice());
     }
 
+    #endregion
+
+    #region Event Handlers
+
     private void ServerHandleUnitSpawned(Unit unit)
     {
         if (unit.connectionToClient.connectionId != connectionToClient.connectionId) { return; }
@@ -201,7 +214,11 @@ public class RTSPlayer : NetworkBehaviour
 
     #endregion
 
+    #endregion
+
     #region Client
+
+    #region Overrides
 
     public override void OnStartAuthority()
     {
@@ -240,6 +257,10 @@ public class RTSPlayer : NetworkBehaviour
         Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
     }
 
+    #endregion
+
+    #region Event Handlers
+
     void ClientHandleResourcesUpdated(int oldResources, int newResources)
     {
         ClientOnResourcesUpdated?.Invoke(newResources);
@@ -276,6 +297,8 @@ public class RTSPlayer : NetworkBehaviour
 
         AuthorityOnPartyOwnerStateUpdated?.Invoke(newState);
     }
+
+    #endregion
 
     #endregion
 }
