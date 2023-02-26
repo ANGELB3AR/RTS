@@ -14,15 +14,20 @@ public class RTSPlayer : NetworkBehaviour
     Color teamColor = new Color();
     List<Unit> myUnits = new List<Unit>();
     List<Building> myBuildings = new List<Building>();
-    
+
     [SyncVar(hook = nameof(ClientHandleResourcesUpdated))]
     int resources = 500;
     [SyncVar(hook = nameof(AuthorityHandlePartyOwnerStateUpdated))]
     bool isPartyOwner = false;
+    [SyncVar(hook = nameof(ClientHandleDisplayNameUpdated))]
+    string displayName;
 
     public event Action<int> ClientOnResourcesUpdated;
 
     public static event Action<bool> AuthorityOnPartyOwnerStateUpdated;
+    public static event Action ClientOnInfoUpdated;
+
+    #region Getters
 
     public bool GetIsPartyOwner()
     {
@@ -54,20 +59,27 @@ public class RTSPlayer : NetworkBehaviour
         return resources;
     }
 
+    public string GetDisplayName()
+    {
+        return displayName;
+    }
+
+    #endregion
+
     public bool CanPlaceBuilding(BoxCollider buildingCollider, Vector3 point)
     {
         if (Physics.CheckBox(
-            point + buildingCollider.center, 
-            buildingCollider.size / 2, 
-            Quaternion.identity, 
-            buildingBlockLayer)) 
-        { 
-            return false; 
+            point + buildingCollider.center,
+            buildingCollider.size / 2,
+            Quaternion.identity,
+            buildingBlockLayer))
+        {
+            return false;
         }
 
         foreach (Building building in myBuildings)
         {
-            if ((point - building.transform.position).sqrMagnitude 
+            if ((point - building.transform.position).sqrMagnitude
                 <= buildingRangeLimit * buildingRangeLimit)
             {
                 return true;
@@ -115,6 +127,12 @@ public class RTSPlayer : NetworkBehaviour
     public void SetResources(int resources)
     {
         this.resources = resources;
+    }
+
+    [Server]
+    public void SetDisplayName(string displayName)
+    {
+        this.displayName = displayName;
     }
 
     [Command]
@@ -207,6 +225,8 @@ public class RTSPlayer : NetworkBehaviour
 
     public override void OnStopClient()
     {
+        ClientOnInfoUpdated?.Invoke();
+
         if (!isClientOnly) { return; }
 
         ((RTSNetworkManager)NetworkManager.singleton).Players.Remove(this);
@@ -220,10 +240,14 @@ public class RTSPlayer : NetworkBehaviour
         Building.AuthorityOnBuildingDespawned -= AuthorityHandleBuildingDespawned;
     }
 
-    [Client]
     void ClientHandleResourcesUpdated(int oldResources, int newResources)
     {
         ClientOnResourcesUpdated?.Invoke(newResources);
+    }
+
+    void ClientHandleDisplayNameUpdated(string oldDisplayName, string newDisplayName)
+    {
+        ClientOnInfoUpdated?.Invoke();
     }
 
     private void AuthorityHandleUnitSpawned(Unit unit)
