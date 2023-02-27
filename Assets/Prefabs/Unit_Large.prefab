@@ -47,6 +47,11 @@ PrefabInstance:
       propertyPath: resourceCost
       value: 250
       objectReference: {fileID: 0}
+    - target: {fileID: 379621911065378418, guid: 0cc5e484fed8aa54dae46e72372ceaf8,
+        type: 3}
+      propertyPath: chaseRange
+      value: 4.9
+      objectReference: {fileID: 0}
     - target: {fileID: 524587749763908200, guid: 0cc5e484fed8aa54dae46e72372ceaf8,
         type: 3}
       propertyPath: m_LocalPosition.y
